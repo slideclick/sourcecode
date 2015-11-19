@@ -10,8 +10,8 @@
 
 import pika
 
-credentials = pika.PlainCredentials("guest", "guest")
-conn_params = pika.ConnectionParameters("localhost",
+credentials = pika.PlainCredentials("guest", "guest123")
+conn_params = pika.ConnectionParameters("192.168.111.192",
                                         credentials = credentials)
 conn_broker = pika.BlockingConnection(conn_params) #/(hwc.1) Establish connection to broker
 
@@ -30,7 +30,7 @@ channel.queue_bind(queue="hello-queue",     #/(hwc.5) Bind the queue and exchang
                    exchange="hello-exchange",
                    routing_key="hola")
 
-
+count = 0
 def msg_consumer(channel, method, header, body): #/(hwc.6) Make function to process incoming messages
     
     channel.basic_ack(delivery_tag=method.delivery_tag)  #/(hwc.7) Message acknowledgement
@@ -39,7 +39,10 @@ def msg_consumer(channel, method, header, body): #/(hwc.6) Make function to proc
         channel.basic_cancel(consumer_tag="hello-consumer") #/(hwc.8) Stop consuming more messages and quit
         channel.stop_consuming()
     else:
-        print body
+        global count
+        
+        print count,body
+        count = count +1
     
     return
 

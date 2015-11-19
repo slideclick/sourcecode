@@ -11,8 +11,8 @@
 
 import pika, sys
 
-credentials = pika.PlainCredentials("guest", "guest")
-conn_params = pika.ConnectionParameters("localhost",
+credentials = pika.PlainCredentials("guest", "guest123")
+conn_params = pika.ConnectionParameters("192.168.111.192",
                                         credentials = credentials)
 conn_broker = pika.BlockingConnection(conn_params) #/(hwp.1) Establish connection to broker
 

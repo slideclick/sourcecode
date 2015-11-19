@@ -1,9 +1,8 @@
 ###############################################
 # RabbitMQ in Action
 # Chapter 1 - Hello World Producer
-#             w/ Publisher Confirms
 # 
-# Requires: pika >= 0.9.6
+# Requires: pika >= 0.9.5
 # 
 # Author: Jason J. W. Williams
 # (C)2011
@@ -11,13 +10,13 @@
 
 import pika, sys
 from pika import spec
-
 credentials = pika.PlainCredentials("guest", "guest123")
 conn_params = pika.ConnectionParameters("192.168.111.192",
                                         credentials = credentials)
-conn_broker = pika.BlockingConnection(conn_params) 
+conn_broker = pika.BlockingConnection(conn_params) #/(hwp.1) Establish connection to broker
 
-channel = conn_broker.channel()
+
+channel = conn_broker.channel() #/(hwp.2) Obtain channel
 
 def confirm_handler(frame): #/(hwppc.1) Publisher confirm handler
     if type(frame.method) == spec.Confirm.SelectOk:
@@ -27,7 +26,7 @@ def confirm_handler(frame): #/(hwppc.1) Publisher confirm handler
             print "Message lost!"
     elif type(frame.method) == spec.Basic.Ack:
         if frame.method.delivery_tag in msg_ids:
-            print "Confirm received!"
+            print frame.method.delivery_tag,"Confirm received!"
             msg_ids.remove(frame.method.delivery_tag)
 
 #/(hwppc.2) Put channel in "confirm" mode
@@ -48,3 +47,12 @@ msg_ids.append(len(msg_ids) + 1) #/(hwppc.5) Add ID to tracking list
 
 channel.close()
 
+#for i in range(1000):
+#    channel.basic_publish(body=msg+str(i),
+#                          exchange="hello-exchange",
+#                          properties=msg_props,
+#                          routing_key="hola") #/(hwp.5) Publish the message
+#channel.basic_publish(body='quit',
+#                          exchange="hello-exchange",
+#                          properties=msg_props,
+#                          routing_key="hola") #/(hwp.5) Publish the message
