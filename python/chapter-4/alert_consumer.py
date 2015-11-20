@@ -34,7 +34,8 @@ def critical_notify(channel, method, header, body):
     message = json.loads(body)
     
     #/(asc.7) Transmit e-mail to SMTP server
-    send_mail(EMAIL_RECIPS, "CRITICAL ALERT", message)
+    #send_mail(EMAIL_RECIPS, "CRITICAL ALERT", message)
+    print message
     print ("Sent alert via e-mail! Alert Text: %s  " + \
            "Recipients: %s") % (str(message), str(EMAIL_RECIPS))
     
@@ -48,9 +49,9 @@ def rate_limit_notify(channel, method, header, body):
     
     #/(asc.9) Decode our message from JSON
     message = json.loads(body)
-    
+    print message
     #/(asc.10) Transmit e-mail to SMTP server
-    send_mail(EMAIL_RECIPS, "RATE LIMIT ALERT!", message)
+    #send_mail(EMAIL_RECIPS, "RATE LIMIT ALERT!", message)
     
     print ("Sent alert via e-mail! Alert Text: %s  " + \
            "Recipients: %s") % (str(message), str(EMAIL_RECIPS))
@@ -61,9 +62,9 @@ def rate_limit_notify(channel, method, header, body):
 
 if __name__ == "__main__":
     #/(asc.0) Broker settings
-    AMQP_SERVER = "localhost"
-    AMQP_USER = "alert_user"
-    AMQP_PASS = "alertme"
+    AMQP_SERVER = "192.168.111.192"
+    AMQP_USER = "guest"
+    AMQP_PASS = "guest123"
     AMQP_VHOST = "/"
     AMQP_EXCHANGE = "alerts"
     

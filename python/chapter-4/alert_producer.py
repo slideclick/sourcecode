@@ -6,6 +6,13 @@
 # 
 # Author: Jason J. W. Williams
 # (C)2011
+
+#In [36]:  %run alert_producer.py -m ddd -r critical.xxx
+#Sent message "ddd" tagged with routing key 'critical.xxx' to exchange '/'.
+
+#In [37]:  %run alert_producer.py -m yyy -r xxx.rate_limit
+#Sent message "yyy" tagged with routing key 'xxx.rate_limit' to exchange '/'.
+
 ###############################################
 import json, pika
 from optparse import OptionParser
@@ -24,8 +31,8 @@ opt_parser.add_option("-m",
 args = opt_parser.parse_args()[0]
 
 #/(asp.1) Establish connection to broker
-creds_broker = pika.PlainCredentials("alert_user", "alertme")
-conn_params = pika.ConnectionParameters("localhost",
+creds_broker = pika.PlainCredentials("guest", "guest123")
+conn_params = pika.ConnectionParameters("192.168.111.192",
                                         virtual_host = "/",
                                         credentials = creds_broker)
 conn_broker = pika.BlockingConnection(conn_params)
