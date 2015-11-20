@@ -10,8 +10,8 @@
 import time, json, pika
 
 #/(rpcc.0) Establish connection to broker
-creds_broker = pika.PlainCredentials("rpc_user", "rpcme")
-conn_params = pika.ConnectionParameters("localhost",
+creds_broker = pika.PlainCredentials("guest", "guest123")
+conn_params = pika.ConnectionParameters("192.168.111.192",
                                         virtual_host = "/",
                                         credentials = creds_broker)
 conn_broker = pika.BlockingConnection(conn_params)

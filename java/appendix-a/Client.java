@@ -17,8 +17,9 @@ public class Client {
   public Client init()
   throws Exception {
     ConnectionFactory factory = new ConnectionFactory();
-    factory.setUsername("rpc_user");
-    factory.setPassword("rpcme");
+    factory.setHost("192.168.111.192");
+    factory.setUsername("guest");
+    factory.setPassword("guest123");
     connection = factory.newConnection();
     channel = connection.createChannel();
     return this;

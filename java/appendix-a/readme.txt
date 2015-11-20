@@ -1,0 +1,1 @@
+javac -cp .;rabbitmq-client.jar;json-20090211.jar Client.java
