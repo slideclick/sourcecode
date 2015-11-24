@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 import pika
 import uuid
-
+creds_broker = pika.PlainCredentials("guest", "guest123")
 class FibonacciRpcClient(object):
     def __init__(self):
         self.connection = pika.BlockingConnection(pika.ConnectionParameters(
-                host='localhost'))
+                host='192.168.111.192',credentials = creds_broker))
 
         self.channel = self.connection.channel()
 
