@@ -8,7 +8,7 @@
 # (C)2011
 ###############################################
 
-import pika, json
+import pika, json,os,sqlite3
 
 #/(apiserver.0) Establish connection to broker
 creds_broker = pika.PlainCredentials("guest", "guest")
@@ -28,14 +28,60 @@ channel.queue_bind(queue="ping",
                    routing_key="ping")
 
 #/(apiserver.2) Wait for RPC calls and reply
+
+def connect(filename):
+    create = not os.path.exists(filename)
+    db = sqlite3.connect(filename)
+    if create:
+        raise
+    return db
+
+def addRequest(android):
+    db = None
+    try:
+        db = connect('pdb')
+
+        cursor = db.cursor()
+        cursor.execute("INSERT INTO KioskLog "
+               "(Location, passwd, money) "
+               "VALUES (?, ?, ? )",
+               (android['location'], android['passwd'], android['money']))
+
+        db.commit()
+    finally:
+        if db is not None:
+            db.close()
+    return android['passwd']
+
+def askAMI():
+    return 555555
+
 def api_ping(channel, method, header, body):
     """'ping' API call."""
     channel.basic_ack(delivery_tag=method.delivery_tag)
     msg_dict = json.loads(body)
     print "Received API call...replying..."
-    channel.basic_publish(body="Pong!" + str(msg_dict["time"]),
-                          exchange="",
-                          routing_key=header.reply_to)
+
+    passwd = addRequest(msg_dict)
+    pid = askAMI()# test Stub
+    try:
+        db = connect('pdb')
+
+        cursor = db.cursor()
+        cursor.execute("UPDATE  KioskLog "
+               "set PlayerID=:ppid "
+               "where passwd=:ppwd",
+               {'ppid':pid,'ppwd':passwd})
+
+        db.commit()
+    finally:
+        if db is not None:
+            db.close()
+
+
+    #channel.basic_publish(body="Pong!" + str(msg_dict["time"]),
+    #                      exchange="",
+    #                      routing_key=header.reply_to)
 
 channel.basic_consume(api_ping,
                       queue="ping",

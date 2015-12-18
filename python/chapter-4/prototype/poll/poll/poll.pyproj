@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>39f33aca-aad5-4fd1-93cf-82f38e7243d3</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>poll.py</StartupFile>
+    <StartupFile>webAPI.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -25,6 +25,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="poll.py" />
+    <Compile Include="webAPI.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="{9a7a9026-48c1-4688-9d5d-e5699d47d074}\2.7" />

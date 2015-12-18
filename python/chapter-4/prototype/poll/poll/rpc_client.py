@@ -19,7 +19,11 @@ channel = conn_broker.channel()
 
 #/(rpcc.1) Issue RPC call & wait for reply
 msg = json.dumps({"client_name": "RPC Client 1.0", 
-                  "time" : time.time()})
+                  "time" : time.time(),
+                  'location': 'MA801',
+                  'passwd':'12341234',
+                  'money':789
+                  })
 
 result = channel.queue_declare(exclusive=True, auto_delete=True)
 msg_props = pika.BasicProperties()
